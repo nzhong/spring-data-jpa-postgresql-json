@@ -1,19 +1,16 @@
 package com.learn.sdjpa.domain;
 
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
 
 import com.learn.sdjpa.util.MyClass;
-import com.learn.sdjpa.util.StringJsonUserType;
-import com.learn.sdjpa.util.Utils;
 
 import javax.persistence.*;
-import java.io.IOException;
 
-@TypeDefs({ @TypeDef(name = "StringJsonObject", typeClass = StringJsonUserType.class) })
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 @Entity
-@Table(name = "customer") //, schema = "datajpa")
+@Table(name = "customer")
 public class Customer {
 
     @Id
@@ -21,8 +18,8 @@ public class Customer {
     private long id;
     private String firstName;
     private String lastName;
-    @Transient
-    //private HashMap<String, Integer> test;
+    @Type(type = "jsonb")
+    @Column(columnDefinition = "jsonb")
     private MyClass test;
 
     public Customer() {
@@ -33,7 +30,7 @@ public class Customer {
         super();
         this.firstName = firstName;
         this.lastName = lastName;
-        test = new MyClass("a","b");
+        test = new MyClass(firstName,lastName);
     }
 
     public long getId() {
@@ -58,19 +55,6 @@ public class Customer {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    @Type(type = "StringJsonObject")
-    @Access(AccessType.PROPERTY)
-    @Column(name = "test")
-    public String getTestAsString() throws IOException {
-        return Utils.getJsonRepresenatation(test);
-    }
-
-    public Customer setTestAsString(String jsonData) throws IOException {
-        if (jsonData != null)
-            test = Utils.getObjectFromJson(jsonData);
-        return this;
     }
 
     @Override

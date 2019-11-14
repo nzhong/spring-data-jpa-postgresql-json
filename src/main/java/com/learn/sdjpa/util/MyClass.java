@@ -26,4 +26,12 @@ public class MyClass {
     public void setMyLast(String myLast) {
         this.myLast = myLast;
     }
+
+    @Override
+    public String toString() {
+        return "MyClass{" +
+                "myFirst='" + myFirst + '\'' +
+                ", myLast='" + myLast + '\'' +
+                '}';
+    }
 }

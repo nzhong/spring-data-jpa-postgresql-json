@@ -17,7 +17,7 @@ public class Application {
 	private static void prepareTable() throws Exception {
         DriverManagerDataSource ds = new DriverManagerDataSource();
         ds.setDriverClassName("org.postgresql.Driver");
-        ds.setUrl("jdbc:postgresql://192.168.1.91:5432/postgres");
+        ds.setUrl("jdbc:postgresql://localhost:5432/postgres");
         ds.setUsername("postgres");
         ds.setPassword("welcome");
         Connection conn = ds.getConnection();
@@ -29,7 +29,7 @@ public class Application {
 
     public static void main(String[] args) throws Exception {
 
-        // prepareTable();
+        //prepareTable();
 
         AbstractApplicationContext context = new AnnotationConfigApplicationContext(DataProvider.class);
 
@@ -52,7 +52,7 @@ public class Application {
         System.out.println();
 
         // fetch an individual customer by ID
-        Customer customer = repository.findOne(61L);
+        Customer customer = repository.findById(61L).orElse(null);
         System.out.println("Customer found with findOne(61L):");
         System.out.println("--------------------------------");
         System.out.println(customer);
@@ -65,6 +65,15 @@ public class Application {
         for (Customer bauer : bauers) {
             System.out.println(bauer);
         }
+
+        // fetch customers by JSONB's last name
+        List<Customer> bauers2 = repository.findByJsonbLastName("Bauer");
+        System.out.println("Customer found with findByJsonbLastName('Bauer'):");
+        System.out.println("--------------------------------------------");
+        for (Customer bauer : bauers2) {
+            System.out.println(bauer);
+        }
+
 
         context.close();
     }

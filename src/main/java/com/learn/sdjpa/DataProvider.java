@@ -21,7 +21,7 @@ public class DataProvider {
     public DataSource dataSource() throws Exception {
         DriverManagerDataSource driver = new DriverManagerDataSource();
         driver.setDriverClassName("org.postgresql.Driver");
-        driver.setUrl("jdbc:postgresql://192.168.1.91:5432/postgres");
+        driver.setUrl("jdbc:postgresql://127.0.0.1:5432/postgres");
         driver.setUsername("postgres");
         driver.setPassword("welcome");
         return driver;
